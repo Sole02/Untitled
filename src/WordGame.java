@@ -12,7 +12,7 @@ public class WordGame {
         String rdword = word[randomIndex];
 
         char[] blankspace = new char[rdword.length()];
-        int failCount = 0; // 틀린 횟수 카운트를 담을 변수
+        int failCount = 0;
 
         for (int i = 0; i < blankspace.length; i++) {
             blankspace[i] = '_';
@@ -54,7 +54,7 @@ public class WordGame {
 
             if (!isCorrect) {
                 failCount++;
-                System.out.println("틀렸습니다. (현재 틀린 횟수: ) " + failCount + "/9");
+                System.out.println("틀렸습니다. (현재 틀린 횟수: " + failCount + "/9" + ")");
             }
 
             if (failCount >= 9) {
