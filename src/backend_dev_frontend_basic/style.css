@@ -1,9 +1,10 @@
+/* 기본 배경 및 레이아웃 */
 body {
     background-color: #f8f9fa;
     font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
-    padding: 50px
+    padding: 50px;
 }
 
 .container {
@@ -11,36 +12,127 @@ body {
     max-width: 800px;
 }
 
-.input-form {
+/* 상단 등록 */
+.input-form-wrapper {
     background: white;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-row {
     display: flex;
     gap: 10px;
 }
 
-input {
+input, select {
     flex: 1;
-    padding: 10px;
-    bordex: 1px solid #ddd;
+    padding: 12px;
+    border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 14px;
+}
+
+/* 별점 선택 */
+.rating-select {
+    flex: 0.5;
+    background-color: #fff;
+    cursor: pointer;
+    color: #ffc107;
+    font-weight: bold;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     background: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* 개별 스타일 */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
 }
 
 .card {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     border-top: 5px solid #28a745;
+}
+
+/* 수정 팝업 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: white;
+    width: 380px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    border-top: 10px solid #28a745;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #666;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-save {
+    flex: 2;
+    background-color: #28a745
+}
+
+.btn-cancel {
+    flex: 1;
+    background-color: #6c757d;
+}
+
+#modal-rating {
+    color: #ffc107;
+    font-weight: bold;
 }

@@ -6,24 +6,70 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1> 음식점 목록 </h1>
+<div class="container">
+    <h1> 음식점 목록 </h1>
 
-        <div class="input-form">
-            <input type="text" id="restaurant-name" placeholder="음식점 이름 입력">
-            <input type="text" id="restaurant-location" placeholder="음식점 위치(주소)">
-            <button id="add-btn">등록하기</button>
+    <div class="input-form-wrapper">
+        <div class="input-row">
+            <input type="text" id="name" placeholder="음식점 이름">
+            <input type="text" id="category" placeholder="분류 (예: 한식, 일식)">
         </div>
+        <div class="input-row">
+            <input type="text" id="address" placeholder="주소">
+            <input type="text" id="call" placeholder="전화번호">
+            <select id="rating" class="rating-select">
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★</option>
+                <option value="3">★★★</option>
+                <option value="2">★★</option>
+                <option value="1">★</option>
+            </select>
+        </div>
+        <button id="add-btn" onclick="register()">맛집 등록하기</button>
+    </div>
 
-        <div id="restaurant-list" clase="card-grid">
-            <div class="card">
-                <h3>예시 음식점</h3>
-                <p>서울시 마포구</p>
+    <div id="restaurant-list" class="card-grid"></div>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h2>음식점 정보 수정</h2>
+        <input type="hidden" id="modal-id">
+        <div class="modal-body">
+            <div class="input-group">
+                <label>음식점 이름</label>
+                <input type="text" id="modal-name">
+            </div>
+            <div class="input-group">
+                <label>분류</label>
+                <input type="text" id="modal-category">
+            </div>
+            <div class="input-group">
+                <label>주소</label>
+                <input type="text" id="modal-address">
+            </div>
+            <div class="input-group">
+                <label>번호</label>
+                <input type="text" id="modal-call">
+            </div>
+            <div class="input-group">
+                <label>별점 수정</label>
+                <select id="modal-rating">
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="3">★★★</option>
+                    <option value="2">★★</option>
+                    <option value="1">★</option>
+                </select>
             </div>
         </div>
+        <div class="modal-buttons">
+            <button onclick="saveEdit()" class="btn-save">저장</button>
+            <button onclick="closeModal()" class="btn-cancel">취소</button>
+        </div>
     </div>
-</body>
-</html>
+</div>
 
+<script src="app.js"></script>
 </body>
 </html>
