@@ -20,7 +20,7 @@ function register() {
     const rating = document.getElementById('rating').value;
 
     if (!name || !address) {
-        alert("이름과 주소는 꼭 입력해주세요!");
+        alert("이름과 주소를 입력해주세요");
         return;
     }
 
@@ -36,7 +36,7 @@ function register() {
         })
     })
         .then(() => {
-            alert("등록 완료! ✨");
+            alert("등록 완료");
             document.getElementById('name').value = '';
             document.getElementById('category').value = '';
             document.getElementById('address').value = '';
@@ -83,17 +83,17 @@ function saveEdit() {
         })
     })
         .then(() => {
-            alert("수정 완료되었습니다!");
+            alert("수정 완료되었습니다.");
             closeModal();
             getPlaces();
         });
 }
 
 function deletePlace(id) {
-    if (!confirm("정말 삭제할까요?")) return;
+    if (!confirm("정말 삭제하시겠습니까?")) return;
     fetch(`${MOCK_API_URL}/${id}`, { method: 'DELETE' })
         .then(() => {
-            alert("삭제 완료");
+            alert("삭제 완료되었습니다.");
             getPlaces();
         });
 }
