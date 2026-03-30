@@ -9,6 +9,8 @@ public class Main {
 
         System.out.print("숫자를 입력하세요.");
         int num1 = input.nextInt();
+        System.out.println("연산자를 입력하세요.");
+        char op = input.next().charAt(0);
         System.out.print("숫자를 입력하세요.");
         int num2 = input.nextInt();
 
