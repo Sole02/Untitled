@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
-// 속성
-    List<Integer> results = new ArrayList<>();
+    private List<Integer> results = new ArrayList<>();
 
+// 속성
     int num1;
     char op;
     int num2;
@@ -47,5 +47,12 @@ public class Calculator {
     void result (int result) {
         this.result = result;
         System.out.println("결과 : " + result);
+    }
+    public List<Integer> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Integer> results) {
+        this.results = results;
     }
 }
