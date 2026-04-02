@@ -19,6 +19,7 @@ public class Main {
 
             int result = calculator.calculator(num1, op, num2);
             System.out.println("결과: " + result);
+            System.out.println("기록: " + calculator.getResults());
 
             System.out.println("계속하시려면 아무 키를 입력, 종료하시려면 'exit'를 입력하세요.");
             String exit = input.next();
