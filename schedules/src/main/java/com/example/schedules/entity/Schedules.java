@@ -1,13 +1,14 @@
 package com.example.schedules.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "schedules")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Schedules {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
