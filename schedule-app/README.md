@@ -17,6 +17,7 @@
 
 ## API 명세
 | Method | URL | 설명 |
+|--------|-----|-----|
 | POST | /schedule | 일정 등록 |
 | GET | /schedule | 전체 조회 |
 | GET | /schedule/{Id} | 단건 조회 |
