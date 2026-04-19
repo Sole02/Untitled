@@ -1,0 +1,26 @@
+# 일정관리 앱 Develop_v2
+
+일정을 기록하여 관리하는 앱입니다.
+CRUD 이해를 위한 복습 일정관리_v2 프로젝트
+
+## 기술 스택
+- Java 17
+- Spring boot
+- MySQL
+- JPA
+- WEB
+
+## 구현 기능
+- 일정 등록
+- 일정 조회
+- 일정 수정
+- 일정 삭제
+
+## API 명세
+| Method | URL | 설명    |
+|--------|-----|-------|
+| POST | /schedule | 일정 등록 |
+| GET | /schedule | 전체 조회 |
+| GET | /schedule/{Id} | 단건 조회 |
+| PUT | /schedule/{Id} | 일정 수정 |
+| DELETE | /schedule/{Id} | 일정 삭제 |
