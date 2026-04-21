@@ -6,6 +6,9 @@ import com.example.schedule_v2.entity.Schedule;
 import com.example.schedule_v2.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ScheduleService {
 
@@ -28,5 +31,17 @@ public class ScheduleService {
         String savedScheduleContent = savedSchedule.getContent();
         ScheduleCreateResponseDto result = new ScheduleCreateResponseDto(savedScheduleId, savedScheduleTitle, savedScheduleContent);
         return result;
+    }
+
+    public List<ScheduleCreateResponseDto> getAllSchedules(){
+        List<Schedule> schedules = scheduleRepository.findAll();
+        List<ScheduleCreateResponseDto> result = new ArrayList<>();
+        for (Schedule schedule : schedules) {
+            result.add(new ScheduleCreateResponseDto(
+                    schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getContent()
+            ));
+        } return result;
     }
 }
