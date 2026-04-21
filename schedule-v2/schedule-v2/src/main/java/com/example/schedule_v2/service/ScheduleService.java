@@ -2,6 +2,7 @@ package com.example.schedule_v2.service;
 
 import com.example.schedule_v2.dto.request.ScheduleCreateRequestDto;
 import com.example.schedule_v2.dto.response.ScheduleCreateResponseDto;
+import com.example.schedule_v2.dto.response.ScheduleReadResponseDto;
 import com.example.schedule_v2.entity.Schedule;
 import com.example.schedule_v2.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,24 @@ public class ScheduleService {
         ScheduleCreateResponseDto result = new ScheduleCreateResponseDto(savedScheduleId, savedScheduleTitle, savedScheduleContent);
         return result;
     }
-
-    public List<ScheduleCreateResponseDto> getAllSchedules(){
-        List<Schedule> schedules = scheduleRepository.findAll();
-        List<ScheduleCreateResponseDto> result = new ArrayList<>();
-        for (Schedule schedule : schedules) {
-            result.add(new ScheduleCreateResponseDto(
-                    schedule.getId(),
-                    schedule.getTitle(),
-                    schedule.getContent()
-            ));
-        } return result;
+    // 다건 조회
+    public List<ScheduleReadResponseDto> getAllSchedules() {
+        // 전체 목록 조회하기
+        List<Schedule> foundSchedulesList = scheduleRepository.findAll();
+        // dto 리스트 만들기
+        List<ScheduleReadResponseDto> scheduleDtoList = new ArrayList<>();
+        // 루프 (꺼낼타입 변수명 : 목록) {}
+        for (Schedule schedule : foundSchedulesList) {
+            // 데이터 꺼내기
+            Long id = schedule.getId();
+            String title = schedule.getTitle();
+            String content = schedule.getContent();
+            // dto 만들기
+            ScheduleReadResponseDto scheduleDto = new ScheduleReadResponseDto(id, title, content);
+            // 리스트에 담기
+            scheduleDtoList.add(scheduleDto);
+        }
+        // 반환
+        return scheduleDtoList;
     }
 }
