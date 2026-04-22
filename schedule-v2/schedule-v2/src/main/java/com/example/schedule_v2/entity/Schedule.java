@@ -31,4 +31,10 @@ public class Schedule {
     public String getContent() {
         return content;
     }
+
+    // 수정 기능
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
