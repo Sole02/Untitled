@@ -4,11 +4,6 @@ public class Cote_01 {
         answer = num1 - num2;
         return answer;
     }
-
-    public static void main(String[] args) {
-        Cote_01 cote = new Cote_01();
-        System.out.println(cote.solution(2, 1)); // 결과: 1
-    }
 }
 
 /**
