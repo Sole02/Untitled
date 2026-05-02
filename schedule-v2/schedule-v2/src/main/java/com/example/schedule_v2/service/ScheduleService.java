@@ -10,7 +10,6 @@ import com.example.schedule_v2.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,5 +80,22 @@ public class ScheduleService {
     }
     // 수정
     @Transactional
-    public ScheduleUpdateResponseDto updateSchedule(Long id, ScheduleUpdateRequestDto requestDto) {}
+    public ScheduleUpdateResponseDto updateSchedule(Long id, ScheduleUpdateRequestDto requestDto) {
+        // 수정할 id값 조회
+        Schedule foundSchedule = scheduleRepository.findById(id).orElseThrow();
+        // 수정 데이터 준비
+        Long foundId = foundSchedule.getId();
+        String foundTitle = requestDto.getTitle();
+        String foundContent = requestDto.getContent();
+        // 수정 & 수정된 객체 반환
+        Schedule updateSchedule = foundSchedule.update(foundTitle, foundContent);
+        // 데이터 준비
+        Long updatedId = updateSchedule.getId();
+        String updatedTitle = updateSchedule.getTitle();
+        String updatedContent = updateSchedule.getContent();
+        // 응답 Dto 만들기
+        ScheduleUpdateResponseDto responseDto = new ScheduleUpdateResponseDto(updatedId, updatedTitle, updatedContent);
+        // 반환
+        return responseDto;
+    }
 }

@@ -44,5 +44,7 @@ public class ScheduleController {
 
     // 일정 수정
     @PutMapping("/{id}")
-    public ScheduleUpdateResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateRequestDto requestDto) {}
+    public ScheduleUpdateResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateRequestDto requestDto) {
+
+    }
 }

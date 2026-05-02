@@ -33,8 +33,9 @@ public class Schedule {
     }
 
     // 수정 기능
-    public void update(String title, String content) {
+    public Schedule update(String title, String content) {
         this.title = title;
         this.content = content;
+        return this;
     }
 }
