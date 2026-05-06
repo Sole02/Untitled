@@ -3,7 +3,6 @@ package com.example.springfilterpractice.user.controller;
 import com.example.springfilterpractice.common.utils.JwtUtil;
 import com.example.springfilterpractice.user.model.request.LoginRequest;
 import com.example.springfilterpractice.user.model.response.LoginResponse;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +18,10 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/get")
-    public String getUserInfo() {
-        log.info("호출");
-        return "호출되었습니다";
+    public String getUserInfo(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        log.info(username);
+        return username;
     }
 
     @PostMapping("/login")
