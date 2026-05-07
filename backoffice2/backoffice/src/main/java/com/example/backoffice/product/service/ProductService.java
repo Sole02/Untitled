@@ -5,6 +5,7 @@ import com.example.backoffice.admin.repository.AdminRepository;
 import com.example.backoffice.product.dto.request.ProductCreateRequestDto;
 import com.example.backoffice.product.dto.response.ProductCreateResponseDto;
 import com.example.backoffice.product.dto.response.ProductReadAllResponseDto;
+import com.example.backoffice.product.dto.response.ProductReadResponseDto;
 import com.example.backoffice.product.entity.Product;
 import com.example.backoffice.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -75,7 +76,7 @@ public class ProductService {
 
     // 상품 조회 (다건)
     @Transactional(readOnly = true)
-    public List<ProductReadAllResponseDto> productReadAllService () {
+    public List<ProductReadAllResponseDto> productReadAll() {
         // Repository를 통해 전체 목록을 조회 후 productList에 담기
         List<Product> productList = productRepository.findAll();
         // productList를 stream 방식으로 꺼내기
@@ -86,7 +87,6 @@ public class ProductService {
                 .toList();
     }
 
-
     /**
      * 상품 단건 조회
      * 1. 컨트롤러 @GetMapping 임시 void, 메서드, (@PathVariable Long id) {}설정
@@ -95,6 +95,7 @@ public class ProductService {
      * 3.1  repository.findById(id)  ※ repository를 통해 findById, 찾다 요청 받은 id를
      * 4. id값으로 찾은 데이터를 엔티티 객체로 담기
      * 4. Product product = repository.findById(id)
+     * / 4.1 요청 id와 일치하지 않는 다면, 예외 처리
      * 5. 응답 dto 생성
      * 5.1 응답 dto에 데이터 담기
      * 5.2 responseDto response = new ResponseDto(product.getName, product.getPrice)
@@ -107,22 +108,17 @@ public class ProductService {
      */
 
     // 상품 조회 (단건)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Transactional(readOnly = true)
+    public ProductReadResponseDto productRead(Long productId) {
+        // 요청 받은 id값을 DB에서 확인 후 데이터를 객체에 담음
+        // 예외 처리, id값이 DB에서 확인되지 않는다면 메시지 출력
+        Product foundProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalStateException("없는 상품입니다."));
+        // 응답 dto 생성 후
+        // 응답 dto에 객체 데이터 담기
+        ProductReadResponseDto response = new ProductReadResponseDto(foundProduct.getId(), foundProduct.getName(), foundProduct.getPrice(), foundProduct.getAdmin().getName());
+        return response;
+    }
 
 
 
