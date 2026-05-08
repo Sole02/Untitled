@@ -3,9 +3,11 @@ package com.example.backoffice.product.service;
 import com.example.backoffice.admin.entity.Admin;
 import com.example.backoffice.admin.repository.AdminRepository;
 import com.example.backoffice.product.dto.request.ProductCreateRequestDto;
+import com.example.backoffice.product.dto.request.ProductUpdateRequestDto;
 import com.example.backoffice.product.dto.response.ProductCreateResponseDto;
 import com.example.backoffice.product.dto.response.ProductReadAllResponseDto;
 import com.example.backoffice.product.dto.response.ProductReadResponseDto;
+import com.example.backoffice.product.dto.response.ProductUpdateResponseDto;
 import com.example.backoffice.product.entity.Product;
 import com.example.backoffice.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -104,7 +106,9 @@ public class ProductService {
      * 6.1 return responseDto
      * 7. 서비스 임시 void를 반환 데이터인 응답 dto로 교체 responseDto
      * 8. 컨트롤러에 서비스 연결
-     * 8.1 멋진 응답 만들기
+     * 8.1 상품id 데이터를 응답 dto에 담고
+     * 8.1 응답 dto와 응답 설정을 담은 객체를 만들어서
+     * 8.2 반환
      */
 
     // 상품 조회 (단건)
@@ -120,6 +124,36 @@ public class ProductService {
         return response;
     }
 
+    /**
+     * 상품 수정
+     * 1. 컨트롤러에서 @PutMapping, 임시 void, 메서드, (@PathVariable Long id, @RequestBody 요청Dto 변수) {}설정
+     * 1.1 요청 dto 생성
+     * 2. 서비스에서 @Transactional, 임시 void, 메서드, (Long id, 요청dto 변수) 설정
+     * 3. 레포지토리를 통해 요청값 id가 DB에 있는지 조회
+     * 3.1 없다면 예외처리 반환
+     * 4. 엔티티에 수정 메서드 만들기
+     * 5. 조회한 엔티티 필드의 데이터를, 요청 dto로 받은 값으로 수정
+     * 6. 응답 dto 생성
+     * 7. 수정된 엔티티 정보를 응답 dto에 담아서
+     * 7.1 반환
+     * 8. 컨트롤러에 서비스 연결
+     * 8.1 요청 데이터 값을 서비스에서 받아 객체에 담고
+     * 8.2 그 객체의 값을 응답 데이터에 담고
+     * 8.3 반환
+     */
 
-
+    // 상품 수정
+    @Transactional
+    public ProductUpdateResponseDto productUpdate(Long productId, ProductUpdateRequestDto request) {
+        // DB에서 상품id 조회하여 foundProduct 객체에 담기
+        // 만약 조회한 상품id가 없다면 예외처리 반환
+        Product foundProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalStateException("없는 상품입니다."));
+        // 조회된 엔티티 필드의 값을 요청dto로 받은 값으로 수정 후 엔티티 객체에 담기
+        Product product = foundProduct.productUpdate(request.getName(), request.getPrice());
+        // 엔티티 객체에 담긴 데이터를 응답 dto에 담아서
+        ProductUpdateResponseDto updateResponse = new ProductUpdateResponseDto(product.getId(), product.getName(), product.getPrice());
+        // 반환
+        return updateResponse;
+    }
 }
