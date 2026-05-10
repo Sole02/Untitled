@@ -83,4 +83,15 @@ public class ProductController {
         // 반환
         return updateResponse;
     }
+
+    // 상품 삭제
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> productDelete(@PathVariable Long productId) {
+        // 서비스 삭제 메서드에 productId 값 전달
+        productService.productDelete(productId);
+        // 응답 설정을 담아, response 객체에 담고
+        ResponseEntity<Void> response = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // 반환
+        return response;
+    }
 }

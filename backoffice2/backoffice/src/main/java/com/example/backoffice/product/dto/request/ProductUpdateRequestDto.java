@@ -4,10 +4,12 @@ public class ProductUpdateRequestDto {
 
     private String name;
     private int price;
+    private Long adminId;
 
-    public ProductUpdateRequestDto(String name, int price) {
+    public ProductUpdateRequestDto(String name, int price, Long adminId) {
         this.name = name;
         this.price = price;
+        this.adminId = adminId;
     }
 
     public String getName() {
@@ -15,5 +17,8 @@ public class ProductUpdateRequestDto {
     }
     public int getPrice() {
         return price;
+    }
+    public Long getAdminId() {
+        return adminId;
     }
 }

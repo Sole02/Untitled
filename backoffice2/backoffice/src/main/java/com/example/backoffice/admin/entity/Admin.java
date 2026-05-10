@@ -9,6 +9,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private boolean isDeleted;
 
     public Admin() {}
 
@@ -21,5 +22,11 @@ public class Admin {
     }
     public String getName() {
         return name;
+    }
+
+    // 소프트 딜리트
+    // 삭제 시 true
+    public void adminDelete() {
+        this.isDeleted = true;
     }
 }

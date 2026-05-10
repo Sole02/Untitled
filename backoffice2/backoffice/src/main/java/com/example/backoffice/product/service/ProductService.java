@@ -146,14 +146,42 @@ public class ProductService {
     @Transactional
     public ProductUpdateResponseDto productUpdate(Long productId, ProductUpdateRequestDto request) {
         // DB에서 상품id 조회하여 foundProduct 객체에 담기
-        // 만약 조회한 상품id가 없다면 예외처리 반환
+        // 만약 조회한 상품id가 없다면 예외 처리 반환
         Product foundProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalStateException("없는 상품입니다."));
+        // DB에서 어드민id 조회 후 객체 만들기
+        // 조회한 어드민id가 없다면 예외 처리
+        Admin admin = adminRepository.findById(request.getAdminId())
+                .orElseThrow(() -> new IllegalStateException("없는 관리자 입니다."));
         // 조회된 엔티티 필드의 값을 요청dto로 받은 값으로 수정 후 엔티티 객체에 담기
-        Product product = foundProduct.productUpdate(request.getName(), request.getPrice());
+        Product savedProduct = foundProduct.productUpdate(request.getName(), request.getPrice(), admin);
         // 엔티티 객체에 담긴 데이터를 응답 dto에 담아서
-        ProductUpdateResponseDto updateResponse = new ProductUpdateResponseDto(product.getId(), product.getName(), product.getPrice());
+        ProductUpdateResponseDto updateResponse = new ProductUpdateResponseDto(savedProduct.getId(), savedProduct.getName(), savedProduct.getPrice());
         // 반환
         return updateResponse;
+    }
+
+    /**
+     * 상품 삭제
+     * 1. 컨트롤러에서 @DeleteMapping, void, 메서드, (@PathVariable long productId) 설정
+     * 2. 서비스에서 @Transactional, void, 메서드 (long productId) 설정
+     * 3. 상품Id 값 DB에서 찾기
+     * 4. 엔티티에서 삭제 기능 구현
+     * 5. Id값 데이터 삭제
+     * 6. 컨트롤러 반환 구현 완성
+     */
+    // 상품 삭제
+    @Transactional
+    public void productDelete(Long productId) {
+        // 요청 받은 상품id 값을 조회 후 조회 한 데이터를 foundProductId 객체에 담고
+        // 상품id 값이 없다면, 예외 처리 반환
+        Product foundProductId = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalStateException("없는 상품입니다."));
+        // 1. 하드 딜리트, 삭제 후 데이터가 완전히 삭제 됨
+        // 받은 객체의 데이터 값 삭제
+//        productRepository.delete(foundProductId);
+        // 2. 소프트 딜리트, 삭제 후 데이터가 서버에 남음
+        // 관리자 엔티티에 소프트 딜리트 기능 추가
+        foundProductId.productDelete();
     }
 }

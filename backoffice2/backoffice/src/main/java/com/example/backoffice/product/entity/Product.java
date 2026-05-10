@@ -15,6 +15,7 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY) // 다대일 관계
     @JoinColumn(name = "admin_id") // FK이름 설정
     private Admin admin;
+    private boolean isDeleted;
 
     public Product() {}
 
@@ -44,11 +45,11 @@ public class Product {
      * 3. this.로 데이터 집어주기
      * 4. 반환 값 정하기 .this로 = 엔티티로 반환
      * 장점 : 객체를 바로 활용 할 수 있고, 코드를 간결하게 할 수 있음
-     * 단점 :
      */
-    public Product productUpdate(String name, int price) {
+    public Product productUpdate(String name, int price, Admin admin) {
         this.name = name;
         this.price = price;
+        this.admin = admin;
         return this;
     }
 
@@ -64,4 +65,9 @@ public class Product {
 //        this.name = name;
 //        this.price = price;
 //    }
+
+    // 소프트 딜리트
+    public void productDelete() {
+        this.isDeleted = true;
+    }
 }
