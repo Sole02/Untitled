@@ -88,6 +88,7 @@ public class ProductService {
      * 8. 컨트롤러에 서비스 연결
      */
 
+    // 상품 조회 (다건), 향상된 for문 방식
     @Transactional(readOnly = true)
     public ProductListResponseDto productList() {
         // 레포지토리에서 findAll하여 모든 데이터 조회 후 엔티티 List 객체에 담기
