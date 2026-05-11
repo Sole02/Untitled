@@ -159,6 +159,7 @@ public class ProductService {
         ProductUpdateResponseDto updateResponse = new ProductUpdateResponseDto(savedProduct.getId(), savedProduct.getName(), savedProduct.getPrice());
         // 반환
         return updateResponse;
+
     }
 
     /**
@@ -182,6 +183,8 @@ public class ProductService {
 //        productRepository.delete(foundProductId);
         // 2. 소프트 딜리트, 삭제 후 데이터가 서버에 남음
         // 관리자 엔티티에 소프트 딜리트 기능 추가
-        foundProductId.productDelete();
+//        foundProductId.productDelete();
+        // 3. 소프트 딜리트, 조회한 객체를 레포지토리를 통해 소프트 딜리트로 삭제
+        productRepository.delete(foundProductId);
     }
 }

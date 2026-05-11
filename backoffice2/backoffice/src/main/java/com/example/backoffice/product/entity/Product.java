@@ -2,9 +2,11 @@ package com.example.backoffice.product.entity;
 
 import com.example.backoffice.admin.entity.Admin;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SoftDelete;
 
 @Entity
 @Table(name = "products")
+@SoftDelete
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +17,6 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY) // 다대일 관계
     @JoinColumn(name = "admin_id") // FK이름 설정
     private Admin admin;
-    private boolean isDeleted;
 
     public Product() {}
 
@@ -66,8 +67,10 @@ public class Product {
 //        this.price = price;
 //    }
 
-    // 소프트 딜리트
-    public void productDelete() {
-        this.isDeleted = true;
-    }
+//    // 소프트 딜리트
+//    // 기능으로 데이터 값을 true, false 값으로 수정하여 데이터를
+//    // 완전히 삭제 시키지 않고 서버에 남기는 구현 방법
+//    public void productDelete() {
+//        this.isDeleted = true;
+//    }
 }
