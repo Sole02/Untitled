@@ -2,10 +2,7 @@ package com.example.backoffice.product.controller;
 
 import com.example.backoffice.product.dto.request.ProductCreateRequestDto;
 import com.example.backoffice.product.dto.request.ProductUpdateRequestDto;
-import com.example.backoffice.product.dto.response.ProductCreateResponseDto;
-import com.example.backoffice.product.dto.response.ProductReadAllResponseDto;
-import com.example.backoffice.product.dto.response.ProductReadResponseDto;
-import com.example.backoffice.product.dto.response.ProductUpdateResponseDto;
+import com.example.backoffice.product.dto.response.*;
 import com.example.backoffice.product.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +34,13 @@ public class ProductController {
 
     // 상품 조회 (다건)
     @GetMapping
-    public ResponseEntity<List<ProductReadAllResponseDto>> productReadAll() {
-        // 서비스 다건 조회 메서드를 호출, 여러개의 데이터를 꺼내서 줘야 하기 때문에 List<응답dto> 하여 객체 생성
-        List<ProductReadAllResponseDto> readAllResponseDto = productService.productReadAll();
-        //  Dto객체와 응답 설정을 넣은 HTTP응답 객체를 생성 후 readAllResponse 객체에 담아
-        ResponseEntity<List<ProductReadAllResponseDto>> readAllResponse = new ResponseEntity<>(readAllResponseDto, HttpStatus.OK);
+    public ResponseEntity<ProductListResponseDto> productReadAll() {
+        // 서비스 다건 조회 메서드를 호출, 여러개의 데이터를 담을 수 있는 ListDto 객체 생성
+        ProductListResponseDto listDto = productService.productList();
+        // Dto객체와 응답 설정을 넣은 HTTP응답 객체를 생성 후 listResponse 객체에 담아서
+        ResponseEntity<ProductListResponseDto> listResponse = new ResponseEntity<>(listDto, HttpStatus.OK);
         // 반환
-        return readAllResponse;
+        return listResponse;
     }
 
     // 상품 조회 (단건), 생성자 방식

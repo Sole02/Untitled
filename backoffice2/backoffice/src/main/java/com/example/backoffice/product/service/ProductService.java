@@ -4,15 +4,13 @@ import com.example.backoffice.admin.entity.Admin;
 import com.example.backoffice.admin.repository.AdminRepository;
 import com.example.backoffice.product.dto.request.ProductCreateRequestDto;
 import com.example.backoffice.product.dto.request.ProductUpdateRequestDto;
-import com.example.backoffice.product.dto.response.ProductCreateResponseDto;
-import com.example.backoffice.product.dto.response.ProductReadAllResponseDto;
-import com.example.backoffice.product.dto.response.ProductReadResponseDto;
-import com.example.backoffice.product.dto.response.ProductUpdateResponseDto;
+import com.example.backoffice.product.dto.response.*;
 import com.example.backoffice.product.entity.Product;
 import com.example.backoffice.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,18 +74,53 @@ public class ProductService {
         return response;
     }
 
-    // 상품 조회 (다건)
+    /**
+     * 상품 조회 (다건)
+     * 1. 컨트롤러 @GetMapping, void, 메서드, () 설정
+     * 2. 서비스 @Transactional(readOnly = true), void, 메서드() 설정
+     * 3. 레포지토리에서 findAll하여 조회, 데이터를 엔티티 List객체에 담기
+     * 4. 단건 조회 dto를 List 객체로 만들기
+     * 5. 향상된 for문 시작
+     * 5.1 List에 조회된 엔티티 데이터를 하나씩 꺼내기
+     * 6. 꺼낸 데이터 다시 조회dto 객체로 담기
+     * 7. 리스트에 추가
+     * 7.1 향상된 for문 끝
+     * 8. 컨트롤러에 서비스 연결
+     */
+
     @Transactional(readOnly = true)
-    public List<ProductReadAllResponseDto> productReadAll() {
-        // Repository를 통해 전체 목록을 조회 후 productList에 담기
-        List<Product> productList = productRepository.findAll();
-        // productList를 stream 방식으로 꺼내기
-        return productList.stream()
-                // 꺼낸 product를 ResponseDto에 넘겨서 dto 생성
-                .map(ProductReadAllResponseDto::new)
-                // 생성된 dto들을 List로 만들고 return
-                .toList();
+    public ProductListResponseDto productList() {
+        // 레포지토리에서 findAll하여 모든 데이터 조회 후 엔티티 List 객체에 담기
+        List<Product> foundProductList = productRepository.findAll();
+        // 조회 dto를 List 객체로 만들기
+        List<ProductReadResponseDto> productList = new ArrayList<>();
+        // 향상된 for문
+        // foundProductList에 조회된 product 데이터를 하나씩 꺼내기
+        for (Product product : foundProductList) {
+            // DB에서 조회한 데이터 조회 dto 객체 만들어 담기
+            ProductReadResponseDto productDto = new ProductReadResponseDto(product.getId(), product.getName(), product.getPrice(), product.getAdmin().getName());
+            // 만든 객체 리스트에 추가
+            productList.add(productDto);
+        }
+        // 리스트를 list응답 dto 객체에 담기
+        ProductListResponseDto responseListDto = new ProductListResponseDto(productList);
+        // 반환
+        return responseListDto;
     }
+
+
+//    // 상품 조회 (다건), stream방식
+//    @Transactional(readOnly = true)
+//    public List<ProductReadAllResponseDto> productReadAll() {
+//        // Repository를 통해 전체 목록을 조회 후 productList에 담기
+//        List<Product> productList = productRepository.findAll();
+//        // productList를 stream 방식으로 꺼내기
+//        return productList.stream()
+//                // 꺼낸 product를 ResponseDto에 넘겨서 dto 생성
+//                .map(ProductReadAllResponseDto::new)
+//                // 생성된 dto들을 List로 만들고 return
+//                .toList();
+//    }
 
     /**
      * 상품 단건 조회
