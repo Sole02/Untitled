@@ -7,8 +7,8 @@
 
 public class Cote_03 {
     class Solution {
-        int solution(int num1, int num2) {
-            int answer = 0;
+        public int solution(int num1, int num2) {
+            int answer = num1 / num2;
             return answer;
         }
     }
