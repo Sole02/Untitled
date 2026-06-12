@@ -19,11 +19,11 @@ public class ChatMessage {
     private User sender;
 
     private String content;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public ChatMessage(User user, String content) {
         this.sender = user;
         this.content = content;
-        this.createAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 }
