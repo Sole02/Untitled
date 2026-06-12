@@ -1,0 +1,29 @@
+package com.example.chatservice.domain.controller;
+
+import com.example.chatservice.domain.model.ChatMessageResponse;
+import com.example.chatservice.domain.service.ChatQueryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/chat")
+public class ChatQueryController {
+
+    private final ChatQueryService chatQueryService;
+
+    @GetMapping("/messages")
+    public List<ChatMessageResponse> getMessages(
+            @RequestParam(defaultValue = "50") int size) {
+        return chatQueryService.getRecentMessages(size);
+    }
+
+    @GetMapping("/messages/before/{id}")
+    public List<ChatMessageResponse> getMessagesBefore(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "50") int size) {
+        return chatQueryService.getMessagesBefore(id, size);
+    }
+}
