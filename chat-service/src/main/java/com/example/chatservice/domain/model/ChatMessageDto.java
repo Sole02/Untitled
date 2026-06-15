@@ -10,6 +10,5 @@ import lombok.Setter;
 public class ChatMessageDto {
 
     private Long roomId;
-    private Long senderId;
     private String content;
 }
