@@ -34,4 +34,14 @@ public class ChatQueryService {
                 .map(ChatMessageResponse::new)
                 .toList();
     }
+
+    public List<ChatMessageResponse> getRecentMessages(Long roomId, int size) {
+
+        Pageable pageable = PageRequest.of(0, size);
+
+        return repository.findRecentByRoom(roomId, pageable)
+                .stream()
+                .map(ChatMessageResponse::new)
+                .toList();
+    }
 }

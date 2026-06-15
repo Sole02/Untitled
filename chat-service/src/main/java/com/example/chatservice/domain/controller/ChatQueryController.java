@@ -26,4 +26,11 @@ public class ChatQueryController {
             @RequestParam(defaultValue = "50") int size) {
         return chatQueryService.getMessagesBefore(id, size);
     }
+
+    @GetMapping("/rooms/{roomId}/messages")
+    public List<ChatMessageResponse> getMessages(
+            @PathVariable Long roomId,
+            @RequestParam(defaultValue = "50") int size) {
+        return chatQueryService.getRecentMessages(roomId, size);
+    }
 }
