@@ -33,6 +33,6 @@ public class ChatController {
         ChatMessage message = new ChatMessage(sender, chatRoom, dto.getContent());
         chatMessageRepository.save(message);
 
-        messagingTemplate.convertAndSend("/sub/chat", dto);
+        messagingTemplate.convertAndSend("/sub/chat/" + dto.getRoomId(), dto);
     }
 }
