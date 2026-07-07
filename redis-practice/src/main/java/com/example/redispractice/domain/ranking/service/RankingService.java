@@ -57,6 +57,15 @@ public class RankingService {
                 destKey // 어떤 key에 값을 저장 할 것인지
         );
 
-        return Collections.emptyList();
+        Set<TypedTuple<String>> result = stringRedisTemplate.opsForZSet()
+                .reverseRangeWithScores(destKey, 0, 2);
+
+        if (result == null) {
+            return Collections.emptyList();
+        }
+
+        return result.stream()
+                .map(tuple -> new RankingDto(tuple.getValue(), tuple.getScore()))
+                .toList();
     }
 }
