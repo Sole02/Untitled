@@ -11,9 +11,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.CommonErrorHandler;
 import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -163,6 +167,70 @@ public class KafkaConfig {
 
         // AckMode를 MANUAL로 설정
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+
+        return factory;
+    }
+
+    // errorDemo 처리를 위한 Consumer 설정
+    @Bean
+    public ConsumerFactory<String, String> errorDemoConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "error-demo-group");
+
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
+        return new DefaultKafkaConsumerFactory<>(props);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> errorDemoKafkaListenerContainerFactory() {
+
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+
+        factory.setConsumerFactory(errorDemoConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public CommonErrorHandler kafkaErrorHandler() {
+        // 1초 간격으로 최대 2번 추가 재시도 (총 3번 시도)
+        FixedBackOff backOff = new FixedBackOff(1000L, 2L);
+
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(backOff);
+
+        return errorHandler;
+    }
+
+    @Bean
+    public CommonErrorHandler kafkaErrorHandlerWithDLT(KafkaTemplate<String, String> stringKafkaTemplate) {
+
+        // 실패한 레코드를 DLT로 보내는 Recoverer <- 추가
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(stringKafkaTemplate);
+
+        // 1초 간격으로 최대 2번 추가 재시도 (총 3번 시도)
+        FixedBackOff backOff = new FixedBackOff(1000L, 2L);
+
+        // recoverer + backOff 를 사용하는 ErrorHandler
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(recoverer, backOff);
+
+        return errorHandler;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> errorDemoDLTKafkaListenerContainerFactory(
+            CommonErrorHandler kafkaErrorHandlerWithDLT) {
+
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+
+        factory.setConsumerFactory(errorDemoConsumerFactory());
+
+        factory.setCommonErrorHandler(kafkaErrorHandlerWithDLT); // 에러 핸들러 등록
 
         return factory;
     }
